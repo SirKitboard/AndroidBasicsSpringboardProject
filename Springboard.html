@@ -1083,4 +1083,175 @@ It originally started as a mobile OS, but has now expanded to :</p>
 <h3 id="lets-start-the-tutorial"><a name="user-content-lets-start-the-tutorial" href="#lets-start-the-tutorial" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Lets start the tutorial</h3>
 <p>So, today we’ll be making an app called clickzilla which introduces you to making a basic activity, layout and using intents and also using the options menu.<br />
 Here’s the completed code for this project for reference<br />
-<a href="https://github.com/adibalwani03/ClickZilla">https://github.com/adibalwani03/ClickZilla</a></p></article></body></html>
+<a href="https://github.com/adibalwani03/ClickZilla">https://github.com/adibalwani03/ClickZilla</a></p>
+<h3 id="create-a-new-project"><a name="user-content-create-a-new-project" href="#create-a-new-project" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Create a New Project</h3>
+<ul>
+<li>Lets create a new Project</li>
+<li>On the next screen you&rsquo;ll be prompted for the following<ul>
+<li>Name</li>
+<li>Package Name<br />
+You can name these anything you want. I called the app ClickZilla and and the general convention for package name is com.&lt;yourhandle&gt;.&lt;appname&gt;<br />
+<img alt="New Project" src="img/startproject.png" /></li>
+</ul>
+</li>
+</ul>
+<h3 id="support"><a name="user-content-support" href="#support" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Support</h3>
+<p>You can support as many systems as you want. <br />
+I tend to prefer supporting anything Android 4.0 or above. </p>
+<p>Android 2.3 is now dead, so no need to support that and android 3.0 is just plain weird so I like to pretend that never happened.</p>
+<p>You can also add support for Google glass, TV and Wear if you want.<br />
+<img alt="Android Support" src="img/choosesdk.png" /></p>
+<h3 id="activity-templates"><a name="user-content-activity-templates" href="#activity-templates" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Activity Templates</h3>
+<p>And now you’ll be taken to the templates screen which contain prebuild activities you can use. For this one, we will be sticking to a blank activity (or a blank with fragment) but you can choose anything you want (Except Login activity and preference acitivity, those are for specific purposes) </p>
+<p><img alt="Choose Activity Type" src="img/chooseactivity.png" /></p>
+<h3 id="activity-name"><a name="user-content-activity-name" href="#activity-name" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Activity Name</h3>
+<p>Now we give the activity a name.<br />
+Again, usual convention is that the first activity the app is called MainActivity<br />
+Or, if the app requires login then you can start at loginActivity or a DispatchActivity (which checks for already logged in users)<br />
+But these are just conventions so you don’t have to strictly follow them</p>
+<p><img alt="Name Activity" src="img/nameactivity.png" /></p>
+<h3 id="and-now-we-wait"><a name="user-content-and-now-we-wait" href="#and-now-we-wait" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>And now we wait</h3>
+<p>For a million years for gradle to get ready</p>
+<p><img alt="Building" src="img/building.png" /></p>
+<p>Meanwhile&hellip;</p>
+<h3 id="what-is-gradle"><a name="user-content-what-is-gradle" href="#what-is-gradle" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>What is gradle?</h3>
+<p>Gradle is the build system that Android Studio uses to build all apps.<br />
+It is essentially a build automation system.<br />
+In your build.gradle file you can declare dependencies, signing configurations for APK signatures, flavors of the app (Such as specific builds for different versions of Android, or debug and release flavors)<br />
+Most of the time you will not need to make changes to build.gradle since Android Studio automates most of it (Automation for an Automation system, Yo Dawg!), but it is useful tool know to make certain things faster.<br />
+For example, if you define a signing config for your release version in gradle, all you need to do is run “$gradlew.bat assembleRelease” and it will generate a complete signed APK.</p>
+<h3 id="congrations"><a name="user-content-congrations" href="#congrations" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Congrations!!</h3>
+<p>You have completed your HelloWorld app.</p>
+<p>Over the next few slides I’ll go over the automatically generated code and then  we’ll start making changes</p>
+<p><img alt="Hello World" src="img/helloworld.png" /></p>
+<h3 id="file-structure"><a name="user-content-file-structure" href="#file-structure" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>File Structure</h3>
+<p>Here you can see the basic file structure of your app. Each folder here has a specific purpose which the following slides will explain.<br />
+<img alt="File Structure" src="img/filestructure.png" /></p>
+<h4 id="manifests"><a name="user-content-manifests" href="#manifests" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Manifests</h4>
+<p>The Manifests directory is where you declare your AndroidManifest.xml and any other manifests.<br />
+<img alt="Manifests" src="img/manifests.png" /><br />
+The purpose of the manifest is to specify things for the device including declarations of all activities, all permissions required (eg. Internet, Wifi, I/O), special hardware requirements (camera, flash, gyro etc) and certain google APIs (eg. maps) and other things that can possibly affect compatibility. </p>
+<p>NOTE : Some of the tasks a manifest does is now also being done by the build.gradle such as declaring minimum android version</p>
+<h4 id="java-packages"><a name="user-content-java-packages" href="#java-packages" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Java Packages</h4>
+<p>The java folder is where all your packages are declared, and inside those are all your java files. <br />
+Most of your code would go in the main package. </p>
+<p>I personally have never used the AndroidTest package, so I can’t say much on that, but i’m guessing its for making test cases for the app (If someone knows, do tell me and will update the slides).<br />
+<img alt="Java" src="img/javafolders.png" /></p>
+<h4 id="res"><a name="user-content-res" href="#res" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Res</h4>
+<p>The res folder is the real deal. This folder contains all the graphics+ui stuff of your app.</p>
+<p><img alt="Resources" src="img/resourcefolder.png" /></p>
+<ul>
+<li>Drawable<br />
+   This is where all images go. Real programmers create different sized of every image to reduce memory imprint on smaller devices, but i’m too lazy for that</li>
+<li>Layout<br />
+    This folder contains the xmls that define the layout of each activity</li>
+<li>Menu<br />
+    This folder stores all the menu options for various activities.</li>
+<li>Values<br />
+    This one contains all defined constants such as colors, themes, paddings, strings, ints etc<br />
+    Usually its a good idea to make another xmls that stores all your API keys and also add it to the .gitignore so you don’t end up accidentally committing them</li>
+</ul>
+<h4 id="gradle"><a name="user-content-gradle" href="#gradle" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Gradle</h4>
+<p>This is where all the gradle files reside. <br />
+Usually you’ll only be making small changes to the build.gradle in the App Module<br />
+Other than that, its mostly left untouched<br />
+<img alt="Gradle" src="img/gradlefolder.png" /></p>
+<h3 id="layouts"><a name="user-content-layouts" href="#layouts" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Layouts</h3>
+<p>Now lets head over the activity_main.xml and you’ll probably be brought the design GUI. From the left pane you can drag and drop objects onto the screen and the layout xml will automatically change to add the new item. <br />
+Easy peasy stuff, but often annoying. <br />
+And so we move onto the actual XML -&gt;</p>
+<h4 id="activity_mainxml-text-view"><a name="user-content-activity_mainxml-text-view" href="#activity_mainxml-text-view" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>activity_main.xml (text view)</h4>
+<p>So this XML is where your layout is defined.<br />
+Going through it line by line we have :</p>
+<ul>
+<li>&lt;RelativeLayout<ul>
+<li>This is the declaration of the layout, which in this case is Relative layout which means all objects are located in relation to a parent which is declared using android:layout_&lt;position&gt;=””</li>
+<li>I find this to be one of the easiest ways to declare a layout.</li>
+<li>Other popular layouts include LinearLayout, Frame, Grid and Table. You could also use ListView and ScrollView</li>
+<li>ignore the xmlns:android line, this is essentially the include of your layout, declaring the format the xml will follow and things you can place inside. You only need to do this for the Root and is often auto-generated</li>
+</ul>
+</li>
+<li>android:&lt;blah_blah&gt;<ul>
+<li>These are properties of whatever item is declared. Usually the name is fairly self explanatory and Android Studio has an amazing autocomplete system so you don’t need to remember the names of specific properies</li>
+</ul>
+</li>
+<li>&lt;TextView<ul>
+<li>This is what currently holds your “HelloWorld” text. We’ll be changing it later.</li>
+</ul>
+</li>
+</ul>
+<h4 id="mainactivityjava"><a name="user-content-mainactivityjava" href="#mainactivityjava" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>MainActivity.java</h4>
+<p>The autogenerated java code. It contains the following things : </p>
+<ul>
+<li><code>public class MainActivity extends ActionBarActivity</code><ul>
+<li>Declaration of your Activity and it inherits from ActionBarAcitivity (which in turn inherits from FragmentActivity which inhertis from Activity), which means you will have an Actionbar in your app and you can put Fragments in it too. </li>
+<li>You can change it to just Activity in which case it won’t have an actionbar or fragment support (which you don’t need for this one)</li>
+</ul>
+</li>
+<li><code>protected void onCreate(Bundle savedInstanceState)</code><ul>
+<li>This method is automatically executed when this Activity is created. It is essentially your constructor.</li>
+<li>setContentView(R.layout.activity_main);<ul>
+<li>This line of code is what “inflates” your activity, which essentially means it takes the layout you specified (in this case, activity_main.xml) and creates your activity to look like the specified layout</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>public boolean onCreateOptionsMenu(Menu menu)</code><ul>
+<li>Similar to the previous method, this one inflates the OptionsMenu using the specified menu layout and is also called automatically</li>
+</ul>
+</li>
+<li><code>public boolean onOptionsItemSelected(MenuItem item) {</code><ul>
+<li>This method is called when the user presses an item in the OptionsMenu and the clicked item is referenced by the item parameter.</li>
+</ul>
+</li>
+</ul>
+<h3 id="clickzilla"><a name="user-content-clickzilla" href="#clickzilla" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ClickZilla</h3>
+<p>So now we get to the actual coding. ClickZilla is a small app that introduces the following topics :</p>
+<ul>
+<li>Making changes to layouts and java files</li>
+<li>Displaying messages to the User</li>
+<li>Making new activities and linking to old one using Intents</li>
+<li>Adding items to the options menu and using them</li>
+</ul>
+<h2 id="clickzilla-part-1"><a name="user-content-clickzilla-part-1" href="#clickzilla-part-1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ClickZilla Part 1</h2>
+<p>Adding a button and Showing messages to users</p>
+<h3 id="modifying-textview"><a name="user-content-modifying-textview" href="#modifying-textview" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Modifying TextView</h3>
+<p>So lets start with adding a button to the activity_main.xml. You can remove the existing textview if you want, or you can keep it, i’ll be keeping it for now, but changing the text to “Welcome To ClickZilla”. Also, if you’re keeping it, add the following lines of code to the textview declaration : </p>
+<pre><code>android:id="@+id/welcome"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+</code></pre>
+<p>IDs are given to views to refer to them in the program or for layout purposes and the layout_lines are specifying that its center aligned and that its at the top of the screen</p>
+<h3 id="adding-a-button"><a name="user-content-adding-a-button" href="#adding-a-button" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Adding a Button</h3>
+<p>Now, to add the button, add the following block of code inside the RelativeLayout : </p>
+<pre><code>&lt;Button android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/click"
+    android:text="Click Me!"
+    android:layout_below="@id/welcome"
+    android:onClick="buttonClicked"/&gt;
+</code></pre>
+<p>ID and Text do the same things as before, whats new is specifying layout_width and layout_height. Setting them to “match_parent” sets to the same size as that of the parent, while setting it to “wrap_content” makes sure the size exactly fits everything inside<br />
+Another new thing is the layout_below, which tells the app that we want this button to be placed directly below whatever object has the id “welcome”<br />
+And finally onClick is the magical part of Button. Clicking on this button will automatically a method of the same name as that specified in the onClick field. Neat! :-D</p>
+<h3 id="layout-preview"><a name="user-content-layout-preview" href="#layout-preview" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Layout Preview</h3>
+<p>At the end, if you go to your Design tab, your layout preview should look something like this</p>
+<p><img alt="Layout Preview" src="img/initiallayout.png" /></p>
+<h3 id="making-the-button-do-work"><a name="user-content-making-the-button-do-work" href="#making-the-button-do-work" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Making the Button Do Work</h3>
+<p>Now that we have a button that calls “buttonClicked” we need to write that method. We also need to provide feedback to the User to show something happened when the button is clicked. <br />
+The purpose of the ClickZilla is to count how many times the button was pressed. So lets make counter in the MainActivity class.<br />
+int clickCounter = 0;<br />
+To provide feedback we use an Android Library called Toast. Toasts a are small messages that fade in and out and are extremely useful for providing feedback. Now to create the method that reacts to the button press, add this to the MainActivity :</p>
+<pre><code>public void buttonClicked(View v) {
+   clickCounter++;
+   Toast.makeText(getApplicationContext(), "The Button has been clicked " + clickCounter + " times", Toast.LENGTH_SHORT).show();
+}
+</code></pre>
+<p>Whats new is the argument View v. Anything in your android application is a View. TextView, Buttons, Radios all are children of View. So in this case, the argument is just a reference to which button was clicked. But we don’t need that for now. <br />
+Toast.makeText is the method used to make Toasts. It takes in three arguments, the first one specifies where the toast is displayed, which in this case is the application context. The second is the message to be displayed and the third is the length. Finally, you need to call .show() to actually display the toast but luckily Android studio is nice enough to warn you if you ever forget :)</p>
+<p>Fun Fact : Toasts are called toasts because originally they would pop in from the bottom like a toast coming out of toaster! </p>
+<h3 id="time-to-test-the-app"><a name="user-content-time-to-test-the-app" href="#time-to-test-the-app" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Time to test the App!</h3>
+<p>But wait.<br />
+How do I test my App?<br />
+There are 2 easy ways of doing this!</p>
+<h4 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a></h4></article></body></html>
