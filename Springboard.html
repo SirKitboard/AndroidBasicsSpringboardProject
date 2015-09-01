@@ -1254,4 +1254,195 @@ Toast.makeText is the method used to make Toasts. It takes in three arguments, t
 <p>But wait.<br />
 How do I test my App?<br />
 There are 2 easy ways of doing this!</p>
-<h4 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a></h4></article></body></html>
+<h4 id="method-1-android-debug-bridge"><a name="user-content-method-1-android-debug-bridge" href="#method-1-android-debug-bridge" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Method 1 : Android Debug Bridge</h4>
+<p>Android Debug Bridge aka ADB is a tool used to debug android applications (Surprise Surprise!). Of course you need an Android Device to do this.<br />
+To get started, you need to have the Google Drivers which you can install from the SDK Manager.<br />
+After that simply enable USB Debugging in your phone’s Developer options and connect it using USB and you’ll see a screen like this when you run the app. </p>
+<p><img alt="Choosing device" src="img/chooseRunningDevice.png" /></p>
+<h4 id="method-2-android-emulator"><a name="user-content-method-2-android-emulator" href="#method-2-android-emulator" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Method 2 : Android Emulator</h4>
+<p>If you don’t have an Android Device, fear not! Android Studio comes to the rescue! <br />
+Android Studio comes with an Android Virtual Device (AVD) (Assuming you chose to install on during the installation). All you need is to chose Launch Emulator from the window displayed on the previous slide and your emulator would be ready in a few minutes.<br />
+If you chose not to install an AVD, you can create one right now using the AVD Manager though you may need to download the system images using the SDK Manager.<br />
+However, these virtual devices are usually slow, so you should only go for this method if you don’t have a compatible android device.<br />
+If you have performance issues with the AVD, try lowering some of its specs using the AVD Manager.</p>
+<h3 id="yay-we-made-something"><a name="user-content-yay-we-made-something" href="#yay-we-made-something" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>YAY WE MADE SOMETHING</h3>
+<p><img alt="Screenshot" src="img/screenshot.png" /></p>
+<p>Now lets make more!</p>
+<h2 id="clickzilla-part-2"><a name="user-content-clickzilla-part-2" href="#clickzilla-part-2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ClickZilla Part 2</h2>
+<p>Creating another Activity and passing data back and forth. </p>
+<h3 id="creating-another-activity"><a name="user-content-creating-another-activity" href="#creating-another-activity" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Creating Another Activity</h3>
+<p>Now that we have an activity to increment the counter, lets add another one to decrement it. <br />
+So go into the porject explorer and right click anywhere and choose New &gt; Activity &gt; Blank Activity<br />
+Name the activity as DecrememntActivity and hit finish.</p>
+<p><img alt="Add New Activity" src="img/addNewActivity.png" /></p>
+<h3 id="time-to-use-what-youve-learnt"><a name="user-content-time-to-use-what-youve-learnt" href="#time-to-use-what-youve-learnt" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Time to use what you&rsquo;ve learnt</h3>
+<p>Modify the MainActivity to have another button which calls launchDecrementActivity() and modify the DecrementActivity to have a button which also calls buttonClicked(). This is what the final activities should look like : </p>
+<p><img alt="Main Activity" src="img/MainActivityDecrementButton.png" /></p>
+<p><img alt="Dispatch Activity" src="img/DecrementActivity.PNG" /></p>
+<h3 id="how-to-launch-this-new-activity"><a name="user-content-how-to-launch-this-new-activity" href="#how-to-launch-this-new-activity" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>How to launch this new Activity</h3>
+<p>So now that we have a new Activity, we want to launch this activity and send the value of the current counter to the new activity. This is handled using Intents. <br />
+To launch an activity, you create and Intent for the activity and then add any extra values to the intent with a key-value pair and then simply launch the activity. <br />
+To do so, put the following code as the onClick for your launchDecrementActivity button : </p>
+<pre><code>public void launchDecrementActivity(View v) {
+    Intent intent = new Intent(getApplicationContext(), DecrementActivity.class);
+    intent.putExtra("counterValue", clickCounter);
+    startActivity(intent);
+}
+</code></pre>
+<p>and modify the onCreate of the DecrementActivity to add these to lines :</p>
+<pre><code>Intent intent = getIntent();
+clickCounter = intent.getIntExtra("counterValue",0);
+</code></pre>
+<p>And you’re all set!<br />
+Don’t forget to add the buttonClicked method that actually decrements the counter :)</p>
+<h3 id="it-works"><a name="user-content-it-works" href="#it-works" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>It Works!</h3>
+<p>If you were successful, you should have two activities that looks like this.</p>
+<p><img alt="Main Activity" src="img/mainActivityDecrementButtonScreenshot.png" /></p>
+<p><img alt="Decrement Activity" src="img/decrementActivityScreenshot.png" /></p>
+<h3 id="bi-directional-data-flow"><a name="user-content-bi-directional-data-flow" href="#bi-directional-data-flow" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Bi-Directional Data Flow</h3>
+<p>So now that we can send data to children activities, we now need to send the data back to the parent once the activity is finished. This is handled by using Intents and the startActivityForResult() method. So first lets prep the child activity for sending the new counter value up.<br />
+To do so, we override the onBackPressed of the DecrementActivity using this block of code :</p>
+<pre><code>@Override
+public void onBackPressed() {
+    Intent intent = new Intent();
+    intent.putExtra("counterValue",clickCounter);
+    setResult(RESULT_OK,intent);
+}
+</code></pre>
+<p>Now, in the parent class, we replace our original startActivity(intent) with startActivityForResult(intent,1); and add the following method to receive the result : </p>
+<pre><code>public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == 1) {
+        if(resultCode == RESULT_OK) {
+            this.clickCounter = data.getIntExtra("counterValue",0);
+        }
+    }
+}
+</code></pre>
+<p>And you’re all Set!</p>
+<h2 id="clickzilla-part-3-user-management-and-remote-data-storage"><a name="user-content-clickzilla-part-3-user-management-and-remote-data-storage" href="#clickzilla-part-3-user-management-and-remote-data-storage" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ClickZilla Part 3 : User Management and Remote Data Storage</h2>
+<p>So now that we have a basic app, lets see how we can manage users and authentication and other cool stuff</p>
+<p>To do all this, we are going to use this magical library called Parse API. </p>
+<h3 id="setting-up-the-parse-sdk"><a name="user-content-setting-up-the-parse-sdk" href="#setting-up-the-parse-sdk" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Setting up the Parse SDK</h3>
+<p>So first of, you need to download the Parse SDK, so go <a href="https://parse.com/docs/downloads">https://parse.com/docs/downloads</a> and download the latest Android SDK. Save the zip file and drag it into the &lsquo;libs&rsquo; folder of your Android Studio Project. and add the following line to your build.gradle dependencies </p>
+<pre><code> compile 'com.parse.bolts:bolts-android:1.+'
+</code></pre>
+<p>Your file structure should now look like this :</p>
+<p><img alt="File Structure with Parse" src="img/fileStructParse.png" /></p>
+<h3 id="make-a-parse-account"><a name="user-content-make-a-parse-account" href="#make-a-parse-account" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Make A Parse Account</h3>
+<p>The great thing about parse is that its Free! So head on over to the parse website and make an account. Once you have an account setup, click on a create app button and enter your app name</p>
+<p><img alt="Parse New App" src="img/parseNewApp.png" /></p>
+<p>Then you want to go to the Keys section of this new app</p>
+<p><img alt="Parse keys" src="img/getKeys.png" /></p>
+<p>From here you would need your Application ID and the Client Key. Do Not share these keys with anyone but your team and do not put it up in a public repo. The following steps will help you set up a seperate file to store them so you don&rsquo;t have to use them in your code.</p>
+<h4 id="create-the-keys-file"><a name="user-content-create-the-keys-file" href="#create-the-keys-file" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Create the keys file</h4>
+<p>In your <code>res\values</code> folder make a file called <code>keys.xml</code>. Now add the 2 keys to this file like this : </p>
+<pre><code>&lt;string name="ApplicationID"&gt;YOUR APPLICATION ID&lt;/string&gt;
+&lt;string name="ClientKey"&gt;YOUR CLIENT KEY&lt;/string&gt;
+</code></pre>
+<p>Make sure to have your version control system ignore this file so you don&rsquo;t accidentally reveal it to the public.</p>
+<h3 id="initialize-parse"><a name="user-content-initialize-parse" href="#initialize-parse" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Initialize Parse</h3>
+<p>To initialize parse, we first need to create the Application class. So in your java folder add another Class, preferable with the same name as the app for clarity purposes (In this case, ClickZilla). This class will initialize your parse users and decide whether they go to the Login Acitivity or the Main Acitivty.</p>
+<p>This is what your class should look like : </p>
+<pre><code>public class ClickZilla extends Application {
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, getString(R.string.ApplicationID), getString(R.string.ClientKey));
+    }
+}
+</code></pre>
+<p>And you also need to add the following line to the <code>&lt;application&gt;</code> section of the Manifest</p>
+<pre><code>android:name=".ClickZilla"
+</code></pre>
+<p>And now you&rsquo;re all set up with Parse!</p>
+<h3 id="creating-login-and-sign-up-activities"><a name="user-content-creating-login-and-sign-up-activities" href="#creating-login-and-sign-up-activities" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Creating login and sign up activities.</h3>
+<p>Next you want to create the login and sign up activities. So go ahead and create to activities that look like this.</p>
+<p><img alt="Login Activity" src="img/loginActivity.png" /></p>
+<p><img alt="Sign Up Activity" src="img/SignupActivity.png" /></p>
+<p>In these 2 acitivities I used a material design element called Floating Labels which can be added by adding the following library to your gradle</p>
+<pre><code> compile 'com.android.support:design:23.0.0'
+</code></pre>
+<p>Here is an example of how to make one : </p>
+<pre><code>&lt;android.support.design.widget.TextInputLayout
+        android:id="@+id/loginEmailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:errorEnabled="true"&gt;
+        &lt;EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/loginEmail"
+            android:hint="Email"
+            android:singleLine="true"/&gt;
+&lt;/android.support.design.widget.TextInputLayout&gt;
+</code></pre>
+<p>Once you have this setup the 2 activities, We can now do the click events for the 3 buttons. For the Sign Up button you just want to start a Signup Activity Intent.</p>
+<p>For the login button, we will use the parse Login In Background method. This is what the handle login button looks like :</p>
+<pre><code> public void handleLogin(View view) {
+    final EditText emailView = (EditText) findViewById(R.id.loginEmail);
+    EditText passwordView = (EditText) findViewById(R.id.loginPassword);
+    String email = emailView.getText().toString();
+    String password = passwordView.getText().toString();
+    ParseUser.logInInBackground(email, password, new LogInCallback() {
+        public void done(ParseUser user, ParseException e) {
+            if (user != null) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            } else {
+                emailView.setError("Username or passord incorrect");
+            }
+        }
+    });
+}
+</code></pre>
+<p>Similarly, in the Signup Activity we have :</p>
+<pre><code>public void handleSignup(View view) {
+    EditText emailView = (EditText) findViewById(R.id.signupEmail);
+    EditText passwordView = (EditText) findViewById(R.id.signupPassword);
+    EditText usernameView = (EditText) findViewById(R.id.signupUserName);
+    EditText passwordRepeatView = (EditText) findViewById(R.id.signupPasswordRepeat);
+    //Declare Strings
+    String email = emailView.getText().toString();
+    String password = passwordView.getText().toString();
+    String username = usernameView.getText().toString();
+    String passwordRepeat = passwordRepeatView.getText().toString();
+    //Check if passwords match
+    if(!password.equals(passwordRepeat)) {
+        passwordRepeatView.setError("Passwords Do not Match");
+        return;
+    }
+    ParseUser user = new ParseUser();
+    user.setUsername(username);
+    user.setPassword(password);
+    user.setEmail(email);
+    //Signup
+    user.signUpInBackground(new SignUpCallback() {
+        public void done(ParseException e) {
+            if (e == null) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            } else {
+                //TODO: Handle Error
+                Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();
+            }
+        }
+    });
+}
+</code></pre>
+<h3 id="bypass-login-retain-user"><a name="user-content-bypass-login-retain-user" href="#bypass-login-retain-user" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Bypass Login / Retain User</h3>
+<p>Now that we have the Login and Signups complete, we can setup the app the bypass the login activity if a user is already logged in. To do so, add the following to the on Create of the LoginActivity</p>
+<pre><code>ParseUser user = ParseUser.getCurrentUser();
+if(user != null) {
+    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+    startActivity(intent);
+}
+</code></pre>
+<p>and move the Intent filters in the manifest to the LoginActivity to make that the initial activity</p>
+<h3 id="logout"><a name="user-content-logout" href="#logout" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Logout</h3>
+<p>Ofcourse, now that we have login, we also need a logout button. To do so, we will use the options menu.<br />
+To do so, in your <code>res\menu\menu_main.xml</code> replace the settings activity (since we don&rsquo;t have any settings) with :</p>
+<pre><code>&lt;item android:id="@+id/action_item" android:title="Login"
+    android:orderInCategory="100" app:showAsAction="never" /&gt;
+</code></pre></article></body></html>
