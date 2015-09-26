@@ -311,7 +311,7 @@ Modify the MainActivity to have another button which calls launchDecrementActivi
 
 ![Main Activity](img/MainActivityDecrementButton.png)
 
-![Dispatch Activity](img/DecrementActivity.PNG)
+![Dispatch Activity](img/DecrementActivity.png)
 
 ### How to launch this new Activity
 
